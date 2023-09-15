@@ -103,7 +103,7 @@ Overall, Todo's project provides a comprehensive solution for managing todos and
 <!--![Todo's](https://github.com/SutharShantanu/Todo/assets/110021464/4cd0ff9e-5f9f-4cf6-ab8a-e25c307db047)-->
 
 
-## FAQ
+<!-- ## FAQ
 
 Is this website fully Responsive?
 
