@@ -1,11 +1,20 @@
-const instance = require("../index.js");
+
 const crypto = require("crypto");
+const Razorpay = require("razorpay");
 const PaymentModel = require("../Models/payment.model.js");
+require("dotenv").config();
+
+const instance = new Razorpay({
+    key_id: process.env.RazorPay_Key_Id,
+    key_secret: process.env.RazorPay_Key_Secret,
+});
+
 
 const checkout = async (req, res) => {
     try {
         const options = {
-            amount: Number(req.body.amount * 100),
+            // amount: Number(req.body.amount * 100),
+            amount: 49900,
             currency: "INR",
         };
         const order = await instance.orders.create(options);

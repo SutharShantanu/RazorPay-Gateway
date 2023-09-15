@@ -4,10 +4,10 @@ const {
     PaymentVerification,
 } = require("../Controllers/Payment.controller.js");
 
-const PaymentRouter = express.Router();
+const paymentRouter = express.Router();
 
-PaymentRouter.post("/checkout", checkout);
+paymentRouter.post("/checkout", checkout);
 
 // PaymentRouter.post("/paymentverification", PaymentVerification);
 
-module.exports = { PaymentRouter };
+module.exports = paymentRouter;
