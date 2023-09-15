@@ -17,6 +17,6 @@ app.use("/pay",paymentRouter);
 
 app.listen(process.env.Port, async () => {
     await connection();
-    console.log(`Server is Listening on Port  ${process.env.Port}`);
+    console.log(`Server is Listening on Port ${process.env.Port}`);
 });
 
