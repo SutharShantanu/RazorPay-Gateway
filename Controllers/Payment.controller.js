@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const mongoose = require("mongoose");
 const Razorpay = require("razorpay");
 const PaymentModel = require("../Models/payment.model.js");
 require("dotenv").config();
@@ -25,35 +26,40 @@ const checkout = async (req, res) => {
 
 const PaymentVerification = async (req, res) => {
     try {
-        const { RazorPay_Order_Id, RazorPay_Payment_Id, RazorPay_Signature } =
-            req.body;
+        const payload = req.body;
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+            payload;
 
-        const body = RazorPay_Order_Id + "|" + RazorPay_Payment_Id;
+        const body = razorpay_order_id + "|" + razorpay_payment_id;
 
         const expectedSignature = crypto
-            .createHmac("sha256", process.env.RAZORPAY_APT_SECRET)
+            .createHmac("sha256", process.env.RazorPay_Key_Secret)
             .update(body.toString())
             .digest("hex");
 
-        const isAuthentic = expectedSignature === RazorPay_Signature;
+        console.log(expectedSignature);
+        console.log(razorpay_signature);
+
+        const isAuthentic = expectedSignature === razorpay_signature;
 
         if (isAuthentic) {
-            // Database comes here
-
-            await PaymentModel.create({
-                RazorPay_Order_Id,
-                RazorPay_Payment_Id,
-                RazorPay_Signature,
+            const newPayment = new PaymentModel({
+                razorpay_order_id,
+                razorpay_payment_id,
+                razorpay_signature,
             });
 
+            await newPayment.save();
+
             res.redirect(
-                `http://localhost:3000/paymentsuccess?reference=${RazorPay_Payment_Id}`
+                `http://localhost:3000/paymentsuccess?reference=${razorpay_payment_id}`
             );
         } else {
             res.status(400).json({
                 success: false,
             });
         }
+
     } catch (error) {
         res.status(400).send({ msg: error.message });
     }
